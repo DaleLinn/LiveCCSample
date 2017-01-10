@@ -27,7 +27,34 @@
 	</h1>
 
     <div id="DemoContent">
-
+        <table class="innerLayout" style="margin-top: 12px;">
+            <tbody >
+             <tr>       
+                <td>
+                    <p style="display: inline-block;color:#fff;">Press to load Live stream</p>
+                </td>
+            	<td>
+            		&nbsp;
+            		<button id="loadVideoFromUrl">
+            			Load</button>
+            		<button id="loadSampleVideo" style="margin-left: 2em;">
+            			Load Sample</button>
+            	</td>
+             </tr>
+            <tr>       
+                <td>
+                    <p style="display: inline-block;color:#fff;">Press to load Live Captions</p>
+                </td>
+            	<td>
+            		&nbsp;
+            		<button id="loadVideoFromUrl">
+            			Load</button>
+            		<button id="loadSampleVideo" style="margin-left: 2em;">
+            			Load Sample</button>
+            	</td>
+             </tr>
+            </tbody>
+        </table>
         <div class="grayNoVideo">
             <div style="display: inline-block; float: left; margin-right: 2%; min-height: 425px;
                 width: 49%;">
@@ -55,7 +82,9 @@
                             </div>
                 </div>
             </div>
-            <div style="display: inline-block; float: left; width: 49%;">
+            <h4>Caption Streaming</h4>
+            <button id="hide1">Hide</button>&nbsp;<button id="show1">Show</button>
+            <div id="ccstream" style="display: none; float: left; width: 49%;">
                 <div style="padding-bottom: 4px;">
                     Caption list:</div>
                 <div id="display">
@@ -64,9 +93,12 @@
             </div>
         </div>
         <hr><br>
+        <h4>Caption standalone Load</h4>
+        <button id="hide">Hide</button>&nbsp;<button id="show">Show</button>
         		<!-- hide this for demo -->
+        <div id="ccurl" style="display:none;">
         <table class="innerLayout" style="margin-bottom: 12px;margin-top: 90px;">
-            <tbody >
+            <tbody>
             <tr>
                 <td>
                     <label for="videoURL">
@@ -98,7 +130,6 @@
             </tbody>
 
             <tbody class="grayNoVideo">
-
                 <tr id="captionFileRow">
                     <td>
                         <label for="ttURL">
@@ -129,6 +160,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 
@@ -141,7 +173,25 @@
 
 	<!--<iframe id="frmFile" src="caption.ttml" onload="LoadDemoCaption();" style="display: none;"></iframe>-->
 	
+    <script>
+        $(document).ready(function(){
+            $("#hide").click(function(){
+                $("#ccurl").hide();
+            });
+            $("#show").click(function(){
+                $("#ccurl").show();
+            });
+        });
 
+        $(document).ready(function(){
+            $("#hide1").click(function(){
+                    $("#ccstream").hide();
+                });
+                $("#show1").click(function(){
+                    $("#ccstream").show();
+                });
+            });
+    </script>
 </div>
 
 <div id="foot">
