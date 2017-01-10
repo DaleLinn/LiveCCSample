@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Copyright © Microsoft Corporation. All Rights Reserved. -->
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Azure Media Indexer English Captioning Demo" />
+    <meta name="t_omni_demopage" content="1" />
+    <title>Azure Media Indexer</title>
+    <script type="text/javascript">
+        (function () {
+            var m = window.navigator.userAgent.match(/\bMSIE\s+(\d+)/);
+            if (m)
+                document.getElementsByTagName("html")[0].setAttribute("class", "ie" + m[1]);
+        })();
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/BaseStyles.css" />
+    <link rel="stylesheet" type="text/css" href="css/Demo.css" />
+    <link rel="stylesheet" href="maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+</head>
+<body onload="init();">
+
+<div id="container">
+	
+    <h4><a href="Indexer.html"><i class="fa fa-chevron-left"></i> Back</a></h4>
+    <h1>
+
+		Azure Media Indexer English Captioning Demo
+	</h1>
+
+	
+   
+    <div id="DemoContent">
+
+	
+		<!-- hide this for demo -->
+        <table class="innerLayout" style="margin-bottom: 12px;">
+            <tbody>
+            <tr>
+                <td>
+                    <label for="videoURL">
+                        Enter URL of video file:</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="videoURL" maxlength="2083" />
+                </td>
+            	<td>
+            		&nbsp;
+            		<button id="loadVideoFromUrl">
+            			Load</button>
+            		<button id="loadSampleVideo" style="margin-left: 2em;">
+            			Load Sample</button>
+            	</td>
+                <td class="browseForVideoFile" style="padding-left: 1em; padding-right: 0.5em;">
+                    or...
+                </td>
+				<td class="browseForVideoFile">
+                    <label for="videoFile">
+                        Choose video file:</label>
+                </td>
+                <td class="browseForVideoFile">
+                    <input type="file" id="videoFile" accept="video/mp4, video/webm" />
+                </td>
+            </tr>
+            </tbody>
+            <tbody class="grayNoVideo">
+
+                <tr id="captionFileRow">
+                    <td>
+                        <label for="ttURL">
+                            Enter URL of caption file:</label>
+                    </td>
+                    <tr>
+                    <td>
+                        <input type="text" id="ttURL"  maxlength="2083"/>
+                    </td>
+                	<td>
+                		&nbsp;
+                		<button id="loadCaptionFileFromUrl">
+                			Load</button>
+                		<button id="loadSampleCaptionFile" style="margin-left: 2em;">
+                			Load Sample</button>
+                	</td>
+                    <td class="browseForCaptionFile" style="padding-left: 1em; padding-right: 0.5em;">
+                        or...
+                    </td>
+					<td class="browseForCaptionFile">
+                        <label for="ttFile">
+                            Choose caption file:</label>
+                    </td>
+                    <td class="browseForCaptionFile">
+                        <input type="file" id="ttFile" accept="text/vtt, application/ttml+xml" />
+                    </td>
+                    </tr>
+                </tr>
+            </tbody>
+        </table>
+        <div class="grayNoVideo">
+        <div style="display: inline-block; float: left; margin-right: 2%; min-height: 425px;
+            width: 49%;">
+            <p>Note: some users have experienced video playback issues with Internet Explorer.</p>
+            <div style="padding-bottom: 4px;">
+                Video:</div>
+            <video id="videoElm"><div class="videoError">HTML5 video is not supported</div></video>
+            <div id="videoError" class="videoError">
+            </div>
+            <div id="captionTitle">
+                &nbsp;</div>
+            <div>
+                <textarea id="textCaptionEntry"></textarea>
+            </div>
+        	<div style="margin-top: 6px; text-align: center;">
+        		<div style="display: inline-block; margin-left: auto; margin-right: auto;">
+        		<button id="playButton">
+        			Play</button>
+        		<button id="pauseButton" style="margin-left: 2em;">
+        			Pause</button>
+        		<button id="justSaveCaption" style="margin-left: 2em;">
+        			Save</button>
+        			<button id="saveCaptionAndPlay" style="margin-left: 2em;">
+        				Save &amp; Continue</button>
+						</div>
+        	</div>
+        </div>
+        <div style="display: inline-block; float: left; width: 49%;">
+            <div style="padding-bottom: 4px;">
+                Caption list:</div>
+            <div id="display">
+            </div>
+            <div style="margin-top: 6px; display:none;"><button id="clearAllCaptions">Clear All</button></div>
+        </div>
+        <div style="clear: both; padding-top: 24px;">
+            Choose caption file format:
+            <input type="radio" name="captionFormat" id="captionFormatTTML" style="margin-left: 0.5em;" />
+            <label for="captionFormatTTML">
+                TTML</label>
+            <input type="radio" name="captionFormat" id="captionFormatVTT" style="margin-left: 0.5em;" />
+            <label for="captionFormatVTT">
+                WebVTT</label>
+            <input type="radio" name="captionFormat" id="captionFormatNone" style="margin-left: 0.5em;" />
+            <label for="captionFormatNone">
+                Hide caption file display</label>
+        </div>
+            <div id="captionFileAndMarkup" style="padding-top: 24px; padding-bottom: 24px;">
+                <div style="padding-bottom: 4px;">
+                    Select and copy the caption file contents below and paste into a <span id="captionFileKind">
+                                                                                         .vtt</span> file<span id="saveToDiskAdvice"> or save it to a file using the “Save to File” button
+                                                                                                             below</span>:
+                </div>
+                <div>
+                    <textarea id="captionFile" style="width: 100%;" rows="12" readonly="readonly"></textarea></div>
+                <div style="padding-top: 6px;">
+                    <button id="blobBuilderSave" style="margin-right: 2em;">
+                        Save to File</button>
+                    <button id="copyToClipboard">
+                        Copy to Clipboard</button>
+                </div>
+                <div style="padding-top: 24px;">
+                    <div style="padding-bottom: 4px;">
+                        HTML5 &lt;video&gt; element with &lt;track&gt; element markup:</div>
+                	<div id="trackCodeSyntax">
+                		<code style="display: block; font-family: Consolas, Monospace; font-size: 14px; color: Black; text-indent: -4em; padding: 0 0.25in;"><div style="background-color: #f0f0f0; padding: 0 4px 2px 4px;">
+<p style="padding: 0; margin: 0 0 0 4em;"><span style="color: Blue;">&lt;</span><span style="color: Maroon;">video</span> <span style="color: Red;">controls</span> <span style="color: Red;">src</span><span style="color: Blue;">=&quot;<span id="markupVideoSrc"></span>&quot;&gt;</span></p>
+<p style="padding: 0; margin: 0 0 0 6em;"><span style="color: Blue;">&lt;</span><span style="color: Maroon;">track</span> <span style="color: Red;">kind</span><span style="color: Blue;">=&quot;captions&quot;</span> <span style="color: Red;">src</span><span style="color: Blue;">=&quot;<span id="markupCaptionSrc"></span>&quot;</span> <span style="color: Red;">srclang</span><span style="color: Blue;">=&quot;en-us&quot;</span> <span style="color: Red;">label</span><span style="color: Blue;">=&quot;English&quot;</span> <span style="color: Blue;">/&gt;</span></p>
+<p style="padding: 0; margin: 0 0 0 4em;"><span style="color: Blue;">&lt;/</span><span style="color: Maroon;">video</span><span style="color: Blue;">&gt;</span></p>
+</div></code>
+
+                	</div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <p>Interested in searching your content library?  Check out <a href="http://mediasearch.azurewebsites.net" target="_blank">Media Search</a>, a demonstration website built using Azure Search.</p>
+
+    </div>
+    <div id="DemoDetails" style="padding-bottom: 0.5in; display:none;">
+        This demo supports subsets of the <a href="http://www.w3.org/TR/ttaf1-dfxp/" target="_blank">
+            W3C TTML 1.0 Recommendation</a> and the rapidly evolving <a href="http://dev.w3.org/html5/webvtt/"
+                target="_blank">WebVTT file format</a>. The supported subsets match those
+        supported for playback in Internet Explorer 10.</div>
+    <!-- end of demo content -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- 
+        LINK BROKEN <script src="http://ajax.Microsoft.com/ajax/jQuery/jquery-1.7.1.min.js" type="text/javascript"> </script>    
+    -->
+    <script src="indexer_en.js" type="text/javascript"> </script>
+
+	<!--<iframe id="frmFile" src="caption.ttml" onload="LoadDemoCaption();" style="display: none;"></iframe>-->
+	
+
+</div>
+
+<div id="foot">
+	&copy; 2016 Microsoft Corporation
+</div>
+
+<div id="bg">
+</div>
+
+</body>
+</html>
